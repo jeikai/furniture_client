@@ -110,12 +110,12 @@ class AddCartOptionState extends State<AddCartOption> {
 
   Widget sizeCustom() {
     List<Widget> items = [];
-    // for (int i = 0; i < widget.sizes.length; i++) {
-    //   items.add(sizeWidget(i, i == widget.sizes.first, widget.sizes[i]));
-    //   items.add(SizedBox(
-    //     width: 10,
-    //   ));
-    // }
+    if (widget.sizes.isNotEmpty) {
+      items.add(sizeWidget(widget.sizes[0]));
+    } else {
+      // Handle empty sizes list
+      items.add(Text("No sizes available"));
+    }
     return Container(
       width: MediaQuery.of(context).size.width - 40,
       padding: EdgeInsets.symmetric(horizontal: 10),
@@ -124,7 +124,7 @@ class AddCartOptionState extends State<AddCartOption> {
         scrollDirection: Axis.horizontal,
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [sizeWidget(widget.sizes[0])],
+          children: items,
         ),
       ),
     );
@@ -230,7 +230,6 @@ class AddCartOptionState extends State<AddCartOption> {
       onTap: () {
         widget.addCart();
         Navigator.pop(context);
-        
       },
       child: Container(
         margin: EdgeInsets.only(left: 110, right: 110, top: 30),

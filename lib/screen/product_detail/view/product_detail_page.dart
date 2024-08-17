@@ -28,18 +28,17 @@ class ProductDetailPage extends GetView<ProductDetailController> {
       width: Get.width,
       child: Column(
         children: [
-          Container(
-            height: Get.height - 120,
-            width: Get.width,
+          Expanded(
             child: SingleChildScrollView(
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    imageCustom(),
-                    nameProductCustom(),
-                    numberProductCustom(),
-                    reviewProductCustom(product),
-                  ]),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  imageCustom(),
+                  nameProductCustom(),
+                  numberProductCustom(),
+                  reviewProductCustom(product),
+                ],
+              ),
             ),
           ),
           buttonCustom(context)
@@ -371,6 +370,11 @@ class ProductDetailPage extends GetView<ProductDetailController> {
   }
 
   Future addToCart(context) {
+    // Check if the imagePath list is not null and not empty
+    String imagePath = (controller.product.imagePath != null && controller.product.imagePath!.isNotEmpty)
+        ? controller.product.imagePath![0]
+        : ""; // Use an empty string or a placeholder image if the list is empty
+
     return showModalBottomSheet(
         isScrollControlled: false,
         context: context,
@@ -382,17 +386,17 @@ class ProductDetailPage extends GetView<ProductDetailController> {
           ),
         ),
         builder: (context) => AddCartOption(
-              idProduct: controller.product.id.toString(),
-              imagePath: controller.product.imagePath?[0] ?? "",
-              price: controller.product.price!,
-              colors: controller.product.imageColorTheme ?? [],
-              sizes: [
-                '${controller.product.width}cm x ${controller.product.height}cm x ${controller.product.length}cm'
-              ],
-              height: controller.product.height,
-              lenght: controller.product.length,
-              width: controller.product.width,
-            ));
-    // Add
+          idProduct: controller.product.id.toString(),
+          imagePath: imagePath,
+          price: controller.product.price!,
+          colors: controller.product.imageColorTheme ?? [],
+          sizes: [
+            '${controller.product.width}cm x ${controller.product.height}cm x ${controller.product.length}cm'
+          ],
+          height: controller.product.height,
+          lenght: controller.product.length,
+          width: controller.product.width,
+        ));
   }
+
 }
