@@ -21,7 +21,7 @@ class Cart {
       'width': this.width,
       'length': this.length,
       'amount': this.amount,
-      'color': Cart().toStringFormat(this.color ?? Colors.black),
+      'color': this.color != null ? toStringFormat(this.color!) : "#000000", // Default to black if color is null
     };
   }
 
@@ -34,20 +34,23 @@ class Cart {
       width: data["width"] ?? 0,
       length: data["length"] ?? 0,
       amount: data["amount"] ?? 0,
-      color: Cart().fromString(data["color"]),
+      color: fromString(data["color"] ?? "#000000"), // Default to black if color is null
     );
   }
 
-  Color fromString(String color) {
-    Color t = HexColor(color);
-    return t;
+  static Color fromString(String color) {
+    // Ensure that the color string is in a valid hexadecimal format
+    if (color.startsWith('#')) {
+      return HexColor(color);
+    } else if (color.startsWith('Color(0x')) {
+      color = color.replaceAll("Color(0x", "#").replaceAll(")", "");
+      return HexColor(color);
+    } else {
+      throw FormatException("Invalid color format");
+    }
   }
 
   String toStringFormat(Color color) {
-    String t = color.toString();
-    t = t.replaceAll("MaterialColor(primary value: ", "");
-    t = t.replaceAll("Color(0xff", "#");
-    t = t.replaceAll(")", "");
-    return t;
+    return '#${color.value.toRadixString(16).padLeft(8, '0')}';
   }
 }

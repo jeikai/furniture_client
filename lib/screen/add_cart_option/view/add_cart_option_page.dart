@@ -228,6 +228,7 @@ class AddCartOptionState extends State<AddCartOption> {
   Widget buttonCustom() {
     return InkWell(
       onTap: () {
+        print("This is add cart");
         widget.addCart();
         Navigator.pop(context);
       },

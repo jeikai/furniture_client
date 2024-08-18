@@ -15,6 +15,7 @@ class CartRepository {
       };
       await cartAPIServer.update(f.id, data);
     } else {
+      print("This is product not in cart");
       await cartAPIServer.add(cart.toJson());
     }
   }
@@ -47,18 +48,22 @@ class CartRepository {
 
   Future<Cart?> findProductOnCarts(Cart cart) async {
     String idUser = FirebaseAuth.instance.currentUser!.uid.toString();
-    CollectionReference collection = FirebaseFirestore.instance.collection('users').doc(idUser).collection('cart');
-    Cart? a;
+    CollectionReference collection = FirebaseFirestore.instance.collection('cart');
+    Cart? foundCart;
 
-    await compareTo(collection, cart).get().then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.map((doc) {
-        if (doc.exists) {
-          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          a = Cart.fromJson(data, id: doc.id);
-        }
-      }).toList();
+    await collection
+        .where("userId", isEqualTo: idUser)
+        .limit(1) // We only need to check if at least one document exists
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        var doc = querySnapshot.docs.first;
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        foundCart = Cart.fromJson(data, id: doc.id);
+      }
     });
-    return a;
+
+    return foundCart;
   }
 
   Future<void> deleteCarts(List<Cart> carts) async {

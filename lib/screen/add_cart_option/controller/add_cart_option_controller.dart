@@ -38,6 +38,12 @@ class AddCartOption extends StatefulWidget {
   State<AddCartOption> createState() => AddCartOptionState();
 
   Future<void> addCart() async {
+    // if (colors.isEmpty) {
+    //   // Handle the error case where no colors are available.
+    //   print("No colors available to add to cart.");
+    //   return;
+    // }
+
     Cart myCart = Cart(
         idProduct: idProduct,
         price: price,
@@ -45,7 +51,11 @@ class AddCartOption extends StatefulWidget {
         width: width,
         length: lenght,
         amount: amount,
-        color: colors[chooseColor]);
+        color: Colors.black); // Safe to access the color now
+
+    print("This is add to cart");
+    print(myCart);
     await CartRepository().addToCart(myCart);
   }
+
 }
