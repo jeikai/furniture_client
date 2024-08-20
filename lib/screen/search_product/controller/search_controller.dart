@@ -57,15 +57,21 @@ class SearchPageController extends GetxController {
   }
 
   Future<void> loadSearch(String text, {bool load = false}) async {
-    if (text != "") {
-      products = await ProductRepository().searchProducts(text);
-      SearchRepository().addMessSearch(text);
-      if (load) {
-        update();
-      } else {
-        Get.back();
-        Get.to(ProductSearchPage());
+    try {
+      if (text.isNotEmpty) {
+        products = await ProductRepository().searchProducts(text);
+        SearchRepository().addMessSearch(text);
+
+        if (load) {
+          update();
+        } else {
+          Get.back();
+          Get.to(ProductSearchPage());
+        }
       }
+    } catch (e) {
+      print('An error occurred: $e');
     }
   }
+
 }

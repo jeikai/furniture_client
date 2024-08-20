@@ -70,7 +70,10 @@ class SearchPage extends GetView<SearchPageController> {
               ),
             Column(
               mainAxisSize: MainAxisSize.min,
-              children: List.generate(controller.searchtext.length, (index) => _recentSearch(controller.searchtext[index], controller, index)),
+              children: List.generate(
+                  controller.searchtext.length,
+                  (index) => _recentSearch(
+                      controller.searchtext[index], controller, index)),
             ),
             _textTitle('Related Products'),
             Container(
@@ -82,7 +85,7 @@ class SearchPage extends GetView<SearchPageController> {
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 20,
                 itemBuilder: (context, index) {
-                  return productItem(controller.products[index]);
+                  return productItem(controller.products[index]!);
                 },
               ),
             )
@@ -106,10 +109,11 @@ class SearchPage extends GetView<SearchPageController> {
             height: height,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: NetworkImage(product.imagePath![0]),
-                  fit: BoxFit.cover,
-                )),
+                // image: DecorationImage(
+                //   image: NetworkImage(product.imagePath![0]),
+                //   fit: BoxFit.cover,
+                // ),
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -128,7 +132,8 @@ class SearchPage extends GetView<SearchPageController> {
 }
 
 // Widget to List.View Recent Product
-Widget _recentSearch(String nameProduct, SearchPageController controller, int index) {
+Widget _recentSearch(
+    String nameProduct, SearchPageController controller, int index) {
   return InkWell(
     onTap: () {
       controller.loadSearch(nameProduct);
@@ -196,7 +201,10 @@ Widget _relatedProduct(dynamic product, int index) {
         Container(
           height: 200,
           width: 150,
-          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(image_demo_prodcut), fit: BoxFit.cover), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(image_demo_prodcut), fit: BoxFit.cover),
+              borderRadius: BorderRadius.circular(10)),
         ),
         Positioned(
           right: 15,
@@ -222,7 +230,10 @@ Widget _relatedProduct(dynamic product, int index) {
           child: Center(
             child: Text(
               'Modern Sofa',
-              style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -232,7 +243,10 @@ Widget _relatedProduct(dynamic product, int index) {
           child: Center(
             child: Text(
               index.toString(),
-              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400),
             ),
           ),
         ),
