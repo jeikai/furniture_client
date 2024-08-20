@@ -79,6 +79,19 @@ class CheckoutPage extends GetView<CheckoutController> {
       );
 
   Widget _buildListProduct() {
+    if (controller.carts.isEmpty) {
+      return Center(
+        child: Text(
+          "Your cart is empty",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black.withOpacity(0.8),
+            fontFamily: nunito_sans,
+          ),
+        ),
+      );
+    }
+
     List<Widget> c = [];
     for (int i = 0; i < controller.carts.length; i++) {
       c.addAll([buildItemProduct(i), const Divider()]);
@@ -280,12 +293,13 @@ class CheckoutPage extends GetView<CheckoutController> {
           width: 130,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: NetworkImage(
-                  controller.products[index].imagePath?[0] ?? "".toString(),
-                ),
-                fit: BoxFit.cover,
-              )),
+              // image: DecorationImage(
+              //   image: NetworkImage(
+              //     controller.products[index].imagePath?[0] ?? "".toString(),
+              //   ),
+              //   fit: BoxFit.cover,
+              // ),
+          ),
         ),
         Container(
           width: Get.width - 170,

@@ -83,6 +83,7 @@ class CartController extends GetxController {
     carts = await CartRepository().getAllMyCarts();
     total = 0;
     for (int i = 0; i < carts.length; i++) {
+      print(carts[i].idProduct.toString());
       Product product = await ProductRepository().getProduct(carts[i].idProduct.toString());
       products.add(product);
       number.add(carts[i].amount);

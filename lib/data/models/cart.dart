@@ -39,14 +39,17 @@ class Cart {
   }
 
   static Color fromString(String color) {
-    // Ensure that the color string is in a valid hexadecimal format
     if (color.startsWith('#')) {
-      return HexColor(color);
+      if (color.length == 7 || color.length == 9) {
+        return HexColor(color);
+      } else {
+        throw FormatException("Invalid color format, expected 7 or 9 characters.");
+      }
     } else if (color.startsWith('Color(0x')) {
       color = color.replaceAll("Color(0x", "#").replaceAll(")", "");
       return HexColor(color);
     } else {
-      throw FormatException("Invalid color format");
+      throw FormatException("Invalid color format, expected # or Color(0x)");
     }
   }
 

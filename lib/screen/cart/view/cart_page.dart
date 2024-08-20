@@ -49,6 +49,14 @@ class CartPage extends GetView<CartController> {
   }
 
   Widget _buildBody() {
+    if (controller.carts.isEmpty) {
+      return Center(
+        child: Text(
+          'Your cart is empty',
+          style: TextStyle(fontSize: 20, color: Colors.grey),
+        ),
+      );
+    }
     return Column(children: [
       Container(
         margin: EdgeInsets.only(left: 10),
@@ -76,15 +84,20 @@ class CartPage extends GetView<CartController> {
               shrinkWrap: true,
               itemCount: controller.carts.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 7),
-                  child: Column(
-                    children: [
-                      buildContent(index),
-                      const Divider(),
-                    ],
-                  ),
-                );
+                if (controller.products.isNotEmpty &&
+                    index < controller.products.length) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 7),
+                    child: Column(
+                      children: [
+                        buildContent(index),
+                        const Divider(),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const SizedBox(); // Return an empty widget if the list is empty or index is out of range
+                }
               })),
       SizedBox(
         height: Get.height * 0.01,
@@ -133,18 +146,20 @@ class CartPage extends GetView<CartController> {
             width: 130,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    controller.products[index].imagePath?[0] ?? "".toString(),
-                  ),
-                  fit: BoxFit.cover,
-                )),
+                // image: DecorationImage(
+                //   image: NetworkImage(
+                //     controller.products[index].imagePath?[0] ?? "".toString(),
+                //   ),
+                //   fit: BoxFit.cover,
+                // ),
+            ),
           ),
           Container(
             height: 100,
             width: Get.width - 200,
             padding: const EdgeInsets.only(left: 5),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 height: 40,
                 child: Text(
@@ -189,12 +204,16 @@ class CartPage extends GetView<CartController> {
               height: 20,
               width: 20,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: Color.fromRGBO(224, 224, 224, controller.number[index] == 1 ? 0.1 : 0.5), borderRadius: BorderRadius.circular(5)),
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(
+                      224, 224, 224, controller.number[index] == 1 ? 0.1 : 0.5),
+                  borderRadius: BorderRadius.circular(5)),
               child: Text('-',
                   style: TextStyle(
                     fontFamily: nunito_sans,
                     fontSize: Get.width * 0.05,
-                    color: textBlackColor.withOpacity(controller.number[index] == 1 ? 0 : 1),
+                    color: textBlackColor
+                        .withOpacity(controller.number[index] == 1 ? 0 : 1),
                     fontWeight: FontWeight.w500,
                   )),
             ),
@@ -219,7 +238,9 @@ class CartPage extends GetView<CartController> {
               height: 20,
               width: 20,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: const Color.fromRGBO(224, 224, 224, 1), borderRadius: BorderRadius.circular(5)),
+              decoration: BoxDecoration(
+                  color: const Color.fromRGBO(224, 224, 224, 1),
+                  borderRadius: BorderRadius.circular(5)),
               child: Text('+',
                   style: TextStyle(
                     fontFamily: nunito_sans,
@@ -240,7 +261,11 @@ class CartPage extends GetView<CartController> {
       child: Row(children: [
         Text(
           total,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: Get.width * 0.05, fontFamily: nunito_sans, color: textGrey3Color),
+          style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: Get.width * 0.05,
+              fontFamily: nunito_sans,
+              color: textGrey3Color),
         ),
         const Spacer(),
         Text(
@@ -264,16 +289,20 @@ class CartPage extends GetView<CartController> {
         }
       },
       child: Container(
-          margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+          margin:
+              const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
           padding: const EdgeInsets.symmetric(vertical: 15),
           width: Get.width,
-          decoration: BoxDecoration(color: buttonColor, borderRadius: BorderRadius.circular(10), boxShadow: const [
-            BoxShadow(
-              color: ColorShadow,
-              blurRadius: 10,
-              spreadRadius: 4,
-            )
-          ]),
+          decoration: BoxDecoration(
+              color: buttonColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [
+                BoxShadow(
+                  color: ColorShadow,
+                  blurRadius: 10,
+                  spreadRadius: 4,
+                )
+              ]),
           child: (controller.loadCheckout)
               ? Center(
                   child: LoadingAnimationWidget.inkDrop(

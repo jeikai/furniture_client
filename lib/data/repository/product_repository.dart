@@ -272,6 +272,8 @@ class ProductRepository {
       await collection.doc(id).get().then((DocumentSnapshot doc) {
         if (doc.exists) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          print("Get data in cart");
+          print(data);
           product = Product.fromJson(data, id);
         }
       });
