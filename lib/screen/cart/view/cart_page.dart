@@ -57,54 +57,54 @@ class CartPage extends GetView<CartController> {
         ),
       );
     }
-    return Column(children: [
-      Container(
-        margin: EdgeInsets.only(left: 10),
-        child: Row(
-          children: [
-            Checkbox(
-              value: controller.all,
-              activeColor: buttonColor,
-              onChanged: (value) {
-                controller.updateCheckPointAll();
-              },
-              side: BorderSide(color: Colors.black),
-            ),
-            const Text(
-              'Select All',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-            ),
-          ],
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10),
+          child: Row(
+            children: [
+              Checkbox(
+                value: controller.all,
+                activeColor: buttonColor,
+                onChanged: (value) {
+                  controller.updateCheckPointAll();
+                },
+                side: BorderSide(color: Colors.black),
+              ),
+              const Text(
+                'Select All',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
         ),
-      ),
-      SizedBox(
-          width: Get.width,
-          height: Get.height - 250,
+        Expanded(
           child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: controller.carts.length,
-              itemBuilder: (context, index) {
-                if (controller.products.isNotEmpty &&
-                    index < controller.products.length) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Column(
-                      children: [
-                        buildContent(index),
-                        const Divider(),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const SizedBox(); // Return an empty widget if the list is empty or index is out of range
-                }
-              })),
-      SizedBox(
-        height: Get.height * 0.01,
-      ),
-      totalPrice(),
-      buttonCheckOut(),
-    ]);
+            shrinkWrap: true,
+            itemCount: controller.carts.length,
+            itemBuilder: (context, index) {
+              if (controller.products.isNotEmpty &&
+                  index < controller.products.length) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 7),
+                  child: Column(
+                    children: [
+                      buildContent(index),
+                      const Divider(),
+                    ],
+                  ),
+                );
+              } else {
+                return const SizedBox(); // Return an empty widget if the list is empty or index is out of range
+              }
+            },
+          ),
+        ),
+        SizedBox(height: Get.height * 0.01),
+        totalPrice(),
+        buttonCheckOut(),
+      ],
+    );
   }
 
   Widget buildContent(int index) {

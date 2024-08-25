@@ -24,12 +24,18 @@ class FiltersController extends GetxController {
 
   Future<void> loadCategory() async {
     typeCategory = await CategoryRepository().getCategories();
-    for (int i = 0; i <= typeCategory.length; i++) {
-      if (typeCategory[i].name == "All") {
-        typeCategory.removeAt(i);
-        break;
+
+    // Ensure the list is not empty before removing "All"
+    if (typeCategory.isNotEmpty) {
+      for (int i = 0; i < typeCategory.length; i++) {
+        if (typeCategory[i].name == "All") {
+          typeCategory.removeAt(i);
+          break;
+        }
       }
     }
+
+    // Initialize checkTypeCategory after ensuring the list is populated
     checkTypeCategory = List.filled(typeCategory.length, 0);
     update();
   }
@@ -65,18 +71,32 @@ class FiltersController extends GetxController {
 
   List<String> getPath() {
     List<String> re = [];
-    for (int i = 0; i < typeCategory.length; i++) {
-      if (checkTypeCategory[i] == 1) re.add(typeCategory[i].path.toString());
+
+    // Check if typeCategory is not empty
+    if (typeCategory.isNotEmpty) {
+      for (int i = 0; i < typeCategory.length; i++) {
+        if (checkTypeCategory[i] == 1) {
+          re.add(typeCategory[i].path.toString());
+        }
+      }
     }
+
     return re;
   }
 
   void clickApply() {
+    // Prevent applying filters if there are no categories loaded
+    if (typeCategory.isEmpty) {
+      Get.snackbar('Error', 'No categories available to apply filters.');
+      return;
+    }
+
     Get.back(result: {
       'path': getPath(),
       'price': range.value,
-      'color': pickColored
+      'color': pickColored,
     });
+
     pickColored = [];
   }
 }

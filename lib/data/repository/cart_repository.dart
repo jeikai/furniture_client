@@ -38,6 +38,7 @@ class CartRepository {
         return Cart();
       }).toList();
     });
+    print(carts);
     return carts;
   }
 

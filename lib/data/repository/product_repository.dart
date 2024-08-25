@@ -153,7 +153,6 @@ class ProductRepository {
           .collection('category')
           .doc("all")
           .collection('products');
-      print(asc);
       await collection
           .orderBy('price', descending: asc)
           .get()
@@ -208,6 +207,8 @@ class ProductRepository {
           .collection('category')
           .doc('all')
           .collection('products');
+      print("This is data for filtering");
+      print(data);
       await filterBy(collection, data)
           .get()
           .then((QuerySnapshot querySnapshot) {
