@@ -83,6 +83,9 @@ class HomeController extends GetxController {
       }
     }
     products = await ProductRepository().getProductsSortByPrice(menu[currentIndex].path.toString(), sortIncreate);
+    if (products.isEmpty) {
+      print("No products found after sorting");
+    }
     update();
   }
 

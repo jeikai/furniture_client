@@ -20,27 +20,34 @@ class ProductRepository {
   Future<List<Product>> getProducts(String category) async {
     List<Product> products = [];
     try {
-      CollectionReference collection = FirebaseFirestore.instance.collection('products');
+      // Adjust the path to point to 'category -> all -> products'
+      CollectionReference collection = FirebaseFirestore.instance
+          .collection('category')
+          .doc('all')
+          .collection('products');
       QuerySnapshot querySnapshot = await collection.get();
+
       print('QuerySnapshot data:');
       querySnapshot.docs.forEach((doc) {
         print(doc.data()); // Print each document's data
       });
+
       products = querySnapshot.docs
           .map((doc) {
-        if (doc.exists && doc.data() != null) {
-          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          if (data['is_deleted'] == null || data['is_deleted'] == false) {
-            return Product.fromJson(data, doc.id);
-          }
-        }
-        return null;
-      })
+            if (doc.exists && doc.data() != null) {
+              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+              if (data['is_deleted'] == null || data['is_deleted'] == false) {
+                return Product.fromJson(data, doc.id);
+              }
+            }
+            return null;
+          })
           .whereType<Product>()
           .toList();
     } catch (e) {
       print('Error in getProducts: $e');
     }
+
     print(products);
     return products;
   }
@@ -144,8 +151,9 @@ class ProductRepository {
     try {
       CollectionReference collection = FirebaseFirestore.instance
           .collection('category')
-          .doc(category)
+          .doc("all")
           .collection('products');
+      print(asc);
       await collection
           .orderBy('price', descending: asc)
           .get()
