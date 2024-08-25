@@ -52,10 +52,11 @@ class ProductSearchPage extends GetView<SearchPageController> {
             height: height,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: NetworkImage(product.imagePath![0]),
-                  fit: BoxFit.cover,
-                )),
+                // image: DecorationImage(
+                //   image: NetworkImage(product.imagePath![0]),
+                //   fit: BoxFit.cover,
+                // ),
+            ),
           ),
           const SizedBox(height: 10),
           Text(

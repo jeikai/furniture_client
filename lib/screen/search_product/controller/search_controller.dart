@@ -65,7 +65,7 @@ class SearchPageController extends GetxController {
         if (load) {
           update();
         } else {
-          Get.back();
+          // Get.back();
           Get.to(ProductSearchPage());
         }
       }

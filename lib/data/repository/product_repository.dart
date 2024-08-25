@@ -126,22 +126,28 @@ class ProductRepository {
           .collection('category')
           .doc('all')
           .collection('products');
-      await collection
-          .where('search', arrayContainsAny: _toStringArray(search))
-          .get()
-          .then((QuerySnapshot querySnapshot) {
+
+      // Retrieve all documents
+      await collection.get().then((QuerySnapshot querySnapshot) {
         products = querySnapshot.docs.map((doc) {
           if (doc.exists) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            Product a = Product.fromJson(data, doc.id);
-            return a;
+            Product product = Product.fromJson(data, doc.id);
+
+            // Check if the name contains the search string
+            if (product.name != null && product.name!.toLowerCase().contains(search.toLowerCase())) {
+              return product;
+            }
           }
-          return Product();
-        }).toList();
+          return null; // Return null if it doesn't match
+        }).where((product) => product != null).cast<Product>().toList();
       });
     } catch (e) {
       print('Error in searchProducts: $e');
     }
+
+    print("This is result of search");
+    print(products);
     return products;
   }
 
