@@ -17,10 +17,10 @@ class SettingPage extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return GetBuilder<SettingController>(
         builder: (value) => Scaffold(
-              backgroundColor: backgroundColor,
-              appBar: appBarCustom(),
-              body: buildBody(),
-            ));
+          backgroundColor: backgroundColor,
+          appBar: appBarCustom(),
+          body: buildBody(),
+        ));
   }
 
   Widget buildBody() {
@@ -32,38 +32,41 @@ class SettingPage extends GetView<SettingController> {
       color: backgroundColor,
       width: Get.width,
       child: SingleChildScrollView(
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          titleEdit(personalInfo, icon_edit, () async {
-            var result = await Get.to(EditProfilePage(), arguments: controller.users);
-            if (result) controller.loadPage();
-          }),
-          infoSetting(name, controller.users.name.toString()),
-          SizedBox(
-            height: Get.height * 0.017,
-          ),
-          infoSetting(email, controller.users.email.toString()),
-          const SizedBox(
-            height: 10,
-          ),
-          titleEdit(password, icon_edit, () {
-            Get.to(() => ChangePassword());
-          }),
-          infoSetting(password, '******'),
-          const SizedBox(
-            height: 10,
-          ),
-          titleEdit(notifications, null, null),
-          notiOptions(sales, true),
-          SizedBox(height: Get.height * 0.01),
-          notiOptions(newArrivals, true),
-          SizedBox(height: Get.height * 0.01),
-          notiOptions(deliveryStatus, true),
-          const SizedBox(
-            height: 10,
-          ),
-          titleEdit(helpCenter, null, null),
-          notiOptions(faq, null),
-        ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            titleEdit(personalInfo, icon_edit, () async {
+              var result = await Get.to(EditProfilePage(), arguments: controller.users);
+              if (result) controller.loadPage();
+            }),
+            infoSetting(name, controller.users.name.toString()),
+            SizedBox(
+              height: Get.height * 0.017,
+            ),
+            infoSetting(email, controller.users.email.toString()),
+            const SizedBox(
+              height: 10,
+            ),
+            titleEdit(password, icon_edit, () {
+              Get.to(() => ChangePassword());
+            }),
+            infoSetting(password, '******'),
+            const SizedBox(
+              height: 10,
+            ),
+            titleEdit(notifications, null, null),
+            notiOptions(sales, true),
+            SizedBox(height: Get.height * 0.01),
+            notiOptions(newArrivals, true),
+            SizedBox(height: Get.height * 0.01),
+            notiOptions(deliveryStatus, true),
+            const SizedBox(
+              height: 10,
+            ),
+            titleEdit(helpCenter, null, null),
+            notiOptions(faq, null),
+          ],
+        ),
       ),
     );
   }
@@ -99,14 +102,15 @@ class SettingPage extends GetView<SettingController> {
             color: Colors.grey,
           ),
         ),
-        IconButton(
-          onPressed: onPressed as void Function()?,
-          icon: SvgPicture.asset(
-            icon.toString(),
-            fit: BoxFit.scaleDown,
-            color: Colors.grey,
-          ),
-        )
+        if (icon != null && icon.isNotEmpty) // Check if icon is not null or empty
+          IconButton(
+            onPressed: onPressed as void Function()?,
+            icon: SvgPicture.asset(
+              icon,
+              fit: BoxFit.scaleDown,
+              color: Colors.grey,
+            ),
+          )
       ],
     );
   }
@@ -114,7 +118,7 @@ class SettingPage extends GetView<SettingController> {
   Widget infoSetting(String title, String content) {
     return Container(
       width: Get.width,
-      height: Get.height * 0.076,
+      height: Get.height * 0.076, // Consider reducing this if needed
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7),
         color: Colors.white,
@@ -128,30 +132,38 @@ class SettingPage extends GetView<SettingController> {
       ),
       child: Padding(
         padding: EdgeInsets.all(Get.height * 0.015),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            title.toString(),
-            style: TextStyle(
-              fontFamily: jose_fin_sans,
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Colors.grey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center, // Center content vertically
+          children: [
+            Flexible( // Makes the content flexible
+              child: Text(
+                title.toString(),
+                style: TextStyle(
+                  fontFamily: jose_fin_sans,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
             ),
-          ),
-          SizedBox(height: Get.height * 0.005),
-          Text(
-            content.toString(),
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
+            SizedBox(height: Get.height * 0.005),
+            Flexible( // Makes the content flexible
+              child: Text(
+                content.toString(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
 
-  Widget notiOptions(String title, bool? opstion) {
+  Widget notiOptions(String title, bool? option) {
     return Container(
       width: Get.width,
       height: Get.height * 0.06,
@@ -168,30 +180,33 @@ class SettingPage extends GetView<SettingController> {
       ),
       child: Padding(
         padding: EdgeInsets.all(Get.height * 0.017),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            title.toString(),
-            style: TextStyle(
-              fontFamily: jose_fin_sans,
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-          opstion == true
-              ? Switch(
-                  value: controller.isSwitched,
-                  onChanged: (bool value) {
-                    controller.onSwitchedType(value);
-                  },
-                  activeTrackColor: Colors.green,
-                  activeColor: Colors.white,
-                )
-              : IconButton(
-                  padding: EdgeInsets.only(bottom: Get.height * 0.017),
-                  onPressed: () {},
-                  icon: const Icon(Icons.keyboard_arrow_right_rounded),
-                )
-        ]),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title.toString(),
+                style: TextStyle(
+                  fontFamily: jose_fin_sans,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              option == true
+                  ? Switch(
+                value: controller.isSwitched,
+                onChanged: (bool value) {
+                  controller.onSwitchedType(value);
+                },
+                activeTrackColor: Colors.green,
+                activeColor: Colors.white,
+              )
+                  : IconButton(
+                padding: EdgeInsets.only(bottom: Get.height * 0.017),
+                onPressed: () {},
+                icon: const Icon(Icons.keyboard_arrow_right_rounded),
+              )
+            ]
+        ),
       ),
     );
   }

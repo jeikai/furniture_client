@@ -145,15 +145,20 @@ class CartPage extends GetView<CartController> {
             height: 100,
             width: 130,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                // image: DecorationImage(
-                //   image: NetworkImage(
-                //     controller.products[index].imagePath?[0] ?? "".toString(),
-                //   ),
-                //   fit: BoxFit.cover,
-                // ),
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                image: NetworkImage(
+                  (controller.products[index].imagePath != null &&
+                      controller.products[index].imagePath!.isNotEmpty &&
+                      controller.products[index].imagePath![0].isNotEmpty)
+                      ? controller.products[index].imagePath![0]
+                      : "https://scontent.fhan19-1.fna.fbcdn.net/v/t45.5328-4/441968936_786522690294388_192808687243888620_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_eui2=AeG4tWZLQYT_l6fYUDYed2DcnHrI7dWEC5Scesjt1YQLlDf8cXURswacYh4ECIGHBh9Jk78gNpWdR2qK4Q3NqgVg&_nc_ohc=bhjvb1j567MQ7kNvgHd-xD8&_nc_ht=scontent.fhan19-1.fna&oh=00_AYDVNkNCRKL8YXArbJ_AOZq4_auow0L8fw8kIyroXIQ6XQ&oe=66D3E223", // URL for a random image
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
+
           Container(
             height: 100,
             width: Get.width - 200,

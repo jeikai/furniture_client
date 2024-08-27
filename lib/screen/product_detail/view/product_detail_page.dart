@@ -150,8 +150,8 @@ class ProductDetailPage extends GetView<ProductDetailController> {
               ),
               const SizedBox(width: 5),
               InkWell(
-                onTap: (){
-                   Get.to(
+                onTap: () {
+                  Get.to(
                     ReviewProductsPage(),
                     arguments: {'product': product},
                   );
@@ -371,7 +371,8 @@ class ProductDetailPage extends GetView<ProductDetailController> {
 
   Future addToCart(context) {
     // Check if the imagePath list is not null and not empty
-    String imagePath = (controller.product.imagePath != null && controller.product.imagePath!.isNotEmpty)
+    String imagePath = (controller.product.imagePath != null &&
+            controller.product.imagePath!.isNotEmpty)
         ? controller.product.imagePath![0]
         : ""; // Use an empty string or a placeholder image if the list is empty
 
@@ -386,17 +387,16 @@ class ProductDetailPage extends GetView<ProductDetailController> {
           ),
         ),
         builder: (context) => AddCartOption(
-          idProduct: controller.product.id.toString(),
-          imagePath: imagePath,
-          price: controller.product.price!,
-          colors: controller.product.imageColorTheme ?? [],
-          sizes: [
-            '${controller.product.width}cm x ${controller.product.height}cm x ${controller.product.length}cm'
-          ],
-          height: controller.product.height,
-          lenght: controller.product.length,
-          width: controller.product.width,
-        ));
+              idProduct: controller.product.id.toString(),
+              imagePath: imagePath,
+              price: controller.product.price!,
+              colors: controller.product.imageColorTheme ?? [],
+              sizes: [
+                '${controller.product.width}cm x ${controller.product.height}cm x ${controller.product.length}cm'
+              ],
+              height: controller.product.height,
+              lenght: controller.product.length,
+              width: controller.product.width,
+            ));
   }
-
 }
