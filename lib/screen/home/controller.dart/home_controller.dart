@@ -40,6 +40,7 @@ class HomeController extends GetxController {
     sort = false;
     loadDataProduct = true;
     update();
+    print(category);
     products = await ProductRepository().getProducts(category);
     print("Products nè");
     print(products);

@@ -23,7 +23,7 @@ class ProductRepository {
       // Adjust the path to point to 'category -> all -> products'
       CollectionReference collection = FirebaseFirestore.instance
           .collection('category')
-          .doc('all')
+          .doc(category)
           .collection('products');
       QuerySnapshot querySnapshot = await collection.get();
 

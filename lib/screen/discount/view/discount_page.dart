@@ -143,15 +143,15 @@ class DiscountPage extends GetView<DiscountController> {
                         ),
                       ),
                       const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          Get.to(const DiscountDetailPage());
-                        },
-                        child: const Icon(
-                          Icons.navigate_next_rounded,
-                          color: Colors.black,
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Get.to(const DiscountDetailPage());
+                      //   },
+                      //   child: const Icon(
+                      //     Icons.navigate_next_rounded,
+                      //     color: Colors.black,
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(

@@ -154,29 +154,36 @@ class FavoritePage extends GetView<FavoriteController> {
     );
   }
 
-  Future addToCart(context, int index) {
+  Future addToCart(BuildContext context, int index) {
+    final product = controller.products[index];
+    // Safely check if imagePath is not empty before accessing the first element
+    final imagePath = (product.imagePath != null && product.imagePath!.isNotEmpty)
+        ? product.imagePath![0]
+        : "";
+
     return showModalBottomSheet(
-        isScrollControlled: false,
-        context: context,
-        backgroundColor: backgroundColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusDirectional.only(
-            topEnd: Radius.circular(30),
-            topStart: Radius.circular(30),
-          ),
+      isScrollControlled: false,
+      context: context,
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(30),
+          topStart: Radius.circular(30),
         ),
-        builder: (context) => AddCartOption(
-              idProduct: controller.products[index].id.toString(),
-              imagePath: controller.products[index].imagePath?[0] ?? "",
-              price: controller.products[index].price!,
-              colors: controller.products[index].imageColorTheme ?? [],
-              sizes: [
-                '${controller.products[index].width}cm x ${controller.products[index].height}cm x ${controller.products[index].length}cm'
-              ],
-              height: controller.products[index].height,
-              lenght: controller.products[index].length,
-              width: controller.products[index].width,
-            ));
+      ),
+      builder: (context) => AddCartOption(
+        idProduct: product.id.toString(),
+        imagePath: imagePath,
+        price: product.price ?? 0, // Ensure price is not null
+        colors: product.imageColorTheme ?? [],
+        sizes: [
+          '${product.width}cm x ${product.height}cm x ${product.length}cm'
+        ],
+        height: product.height ?? 0,
+        lenght: product.length ?? 0,
+        width: product.width ?? 0,
+      ),
+    );
   }
 
   AppBar appBarCustom() {

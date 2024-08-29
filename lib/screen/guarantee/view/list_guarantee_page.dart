@@ -235,7 +235,10 @@ class ListGuaranteePage extends GetView<ListGuaranteeController> {
                   height: Get.height * 0.13,
                   width: Get.height * 0.13,
                   child: Image.network(
-                    guaranteeDoing.product.imagePath!.first,
+                    guaranteeDoing.product.imagePath!.isNotEmpty
+                        ? guaranteeDoing.product.imagePath!.first
+                        : 'https://scontent.fhan19-1.fna.fbcdn.net/v/t39.30808-6/457549306_1044188777090033_865691948350707320_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=bd9a62&_nc_eui2=AeERE8oNLhjS4k2PYCKwjy48t4-O28DNALK3j47bwM0AsokNiXWIniciSuOjr9odQFqxAkWvSFXS6OfyVBxOjDM_&_nc_ohc=Zb1_Y__NOAMQ7kNvgG1cene&_nc_ht=scontent.fhan19-1.fna&oh=00_AYBP94C0Bwhl92hKp0zgSRYzNhGeMQS0DWRrQmSx4giXGg&oe=66D5AD5A',
+                    // Replace with your default image URL
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -351,9 +354,12 @@ class ListGuaranteePage extends GetView<ListGuaranteeController> {
                   height: Get.height * 0.13,
                   width: Get.height * 0.13,
                   child: Image.network(
-                    guarantee.product.imagePath!.first,
+                    guarantee.product.imagePath!.isNotEmpty
+                        ? guarantee.product.imagePath!.first
+                        : 'https://scontent.fhan19-1.fna.fbcdn.net/v/t39.30808-6/457549306_1044188777090033_865691948350707320_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=bd9a62&_nc_eui2=AeERE8oNLhjS4k2PYCKwjy48t4-O28DNALK3j47bwM0AsokNiXWIniciSuOjr9odQFqxAkWvSFXS6OfyVBxOjDM_&_nc_ohc=Zb1_Y__NOAMQ7kNvgG1cene&_nc_ht=scontent.fhan19-1.fna&oh=00_AYBP94C0Bwhl92hKp0zgSRYzNhGeMQS0DWRrQmSx4giXGg&oe=66D5AD5A', // Replace with your default image URL
                     fit: BoxFit.cover,
                   ),
+
                 ),
                 SizedBox(
                   width: Get.height * 0.026,
