@@ -62,7 +62,11 @@ class MyReviewPage extends GetView<MyReviewController> {
           const SizedBox(height: 5),
           buildMenu(),
           const Divider(thickness: 5, color: WHITE),
-          (controller.tabCurrentIndex.value == 2) ? buildSellerReview() : buildContent()
+          Expanded( // Thêm Expanded ở đây
+            child: (controller.tabCurrentIndex.value == 2)
+                ? buildSellerReview()
+                : buildContent(),
+          ),
         ],
       ),
     );
@@ -74,7 +78,8 @@ class MyReviewPage extends GetView<MyReviewController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(controller.tab.length, (index) => buildItemTab(index, controller.tab[index])),
+        children: List.generate(controller.tab.length,
+            (index) => buildItemTab(index, controller.tab[index])),
       ),
     );
   }
@@ -90,14 +95,22 @@ class MyReviewPage extends GetView<MyReviewController> {
         children: [
           Text(
             content,
-            style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w600, fontSize: 16, color: index == controller.tabCurrentIndex.value ? Colors.black : Colors.grey),
+            style: TextStyle(
+                fontFamily: jose_fin_sans,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: index == controller.tabCurrentIndex.value
+                    ? Colors.black
+                    : Colors.grey),
           ),
           index == controller.tabCurrentIndex.value
               ? Container(
                   height: 4,
                   width: 40,
                   margin: const EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(50)),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(50)),
                 )
               : Container(),
         ],
@@ -122,33 +135,49 @@ class MyReviewPage extends GetView<MyReviewController> {
 
   Widget buildItem(Review item, index) {
     return SizedBox(
-        width: Get.width,
-        height: 205,
+      width: Get.width,
+      height: 205,
+      child: SingleChildScrollView(
+        // Add SingleChildScrollView to enable scrolling if needed
         child: Column(
           children: [
-            (controller.reviews.length != null)
-                ? Container(
-                    color: backgroundColor,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: Get.width * 0.04),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const SizedBox(width: 10),
-                        statusOrder(item),
-                        const Divider(),
-                        infoProducts(item),
-                        const Divider(),
-                        review(item),
-                      ]),
-                    ),
-                  )
-                : Center(
-                    child: Text(
-                    "No review yet",
-                    style: TextStyle(color: Colors.red, fontSize: 20, fontFamily: nunito_sans),
-                  )),
+            if (controller.reviews.isNotEmpty)
+              Container(
+                color: backgroundColor,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: Get.width * 0.04,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 10),
+                      statusOrder(item),
+                      const Divider(),
+                      infoProducts(item),
+                      const Divider(),
+                      review(item),
+                    ],
+                  ),
+                ),
+              )
+            else
+              Center(
+                child: Text(
+                  "No review yet",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                    fontFamily: nunito_sans,
+                  ),
+                ),
+              ),
             const Divider(thickness: 5, color: WHITE),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Row statusOrder(Review item) {
@@ -212,7 +241,8 @@ class MyReviewPage extends GetView<MyReviewController> {
             ),
             InkWell(
               onTap: () async {
-                var result = await Get.to(() => const WriteReviewPage(), arguments: item);
+                var result = await Get.to(() => const WriteReviewPage(),
+                    arguments: item);
                 if (result != null) {
                   controller.loadData();
                 }
@@ -234,7 +264,8 @@ class MyReviewPage extends GetView<MyReviewController> {
           ])
         : InkWell(
             onTap: () async {
-              var result = await Get.to(() => const WriteReviewPage(), arguments: item);
+              var result =
+                  await Get.to(() => const WriteReviewPage(), arguments: item);
               if (result != null) {
                 controller.loadData();
               }
@@ -275,11 +306,17 @@ class MyReviewPage extends GetView<MyReviewController> {
           height: 80,
           width: 80,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              image: DecorationImage(
-                image: NetworkImage(item.product.imagePath![0]),
-                fit: BoxFit.cover,
-              )),
+            borderRadius: BorderRadius.circular(5),
+            image: DecorationImage(
+              image: NetworkImage(
+                item.product.imagePath != null &&
+                        item.product.imagePath!.isNotEmpty
+                    ? item.product.imagePath![0]
+                    : 'https://scontent.fhan19-1.fna.fbcdn.net/v/t39.30808-6/457520415_3653543601624471_7425025362526940664_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeEWVi3AS8YACcdtraYC-6hDmEIlkDzus9GYQiWQPO6z0fjXWxwoXqSzUez6pa6nef9ypGmPraV5ELkU_GZomoXS&_nc_ohc=e39af-a43dMQ7kNvgHHMLje&_nc_ht=scontent.fhan19-1.fna&oh=00_AYBE9ALHbtqvIzJJ176Hs2Rojcw4V9ug5dsNC2xOQY4Gzg&oe=66D76945', // Hình ảnh mặc định
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,28 +392,34 @@ class MyReviewPage extends GetView<MyReviewController> {
                 ? Container(
                     color: backgroundColor,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: Get.width * 0.04),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const SizedBox(width: 10),
-                        statusOrder(value),
-                        const Divider(),
-                        infoProducts(value),
-                        const Divider(),
-                        SizedBox(
-                          width: Get.width - 120,
-                          child: Text(
-                            'Review: ${value.content}',
-                          ),
-                        ),
-                        const Divider(),
-                        reply(value),
-                      ]),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: Get.width * 0.04),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 10),
+                            statusOrder(value),
+                            const Divider(),
+                            infoProducts(value),
+                            const Divider(),
+                            SizedBox(
+                              width: Get.width - 120,
+                              child: Text(
+                                'Review: ${value.content}',
+                              ),
+                            ),
+                            const Divider(),
+                            reply(value),
+                          ]),
                     ),
                   )
                 : Center(
                     child: Text(
                     "No review yet",
-                    style: TextStyle(color: Colors.red, fontSize: 20, fontFamily: nunito_sans),
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
+                        fontFamily: nunito_sans),
                   )),
             const Divider(thickness: 5, color: WHITE),
           ],
@@ -398,7 +441,8 @@ class MyReviewPage extends GetView<MyReviewController> {
         ),
         InkWell(
           onTap: () async {
-            var result = await Get.to(() => const WriteReviewPage(), arguments: value);
+            var result =
+                await Get.to(() => const WriteReviewPage(), arguments: value);
             if (result != null) {
               controller.loadData();
             }

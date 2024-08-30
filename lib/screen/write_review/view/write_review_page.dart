@@ -159,7 +159,12 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(width: 1.2),
                 image: DecorationImage(
-                  image: NetworkImage(controller.review.product.imagePath![0]),
+                  image: NetworkImage(
+                    controller.review.product.imagePath != null &&
+                        controller.review.product.imagePath!.isNotEmpty
+                        ? controller.review.product.imagePath![0]
+                        : 'https://scontent.fhan19-1.fna.fbcdn.net/v/t39.30808-6/457520415_3653543601624471_7425025362526940664_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeEWVi3AS8YACcdtraYC-6hDmEIlkDzus9GYQiWQPO6z0fjXWxwoXqSzUez6pa6nef9ypGmPraV5ELkU_GZomoXS&_nc_ohc=e39af-a43dMQ7kNvgHHMLje&_nc_ht=scontent.fhan19-1.fna&oh=00_AYBE9ALHbtqvIzJJ176Hs2Rojcw4V9ug5dsNC2xOQY4Gzg&oe=66D76945', // Hình ảnh mặc định
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
