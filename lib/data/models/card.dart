@@ -9,14 +9,14 @@ class Card {
   String numberCard;
   String cardCVV;
   DateTime EXD;
-  Bank bank;
+  // Bank bank;
   Card({
     required this.id,
     required this.cardHolderName,
     required this.numberCard,
     required this.cardCVV,
     required this.EXD,
-    required this.bank,
+    // required this.bank,
   });
 
   Card copyWith({
@@ -33,7 +33,7 @@ class Card {
       numberCard: numberCard ?? this.numberCard,
       cardCVV: cardCVV ?? this.cardCVV,
       EXD: EXD ?? this.EXD,
-      bank: bank ?? this.bank,
+      // bank: bank ?? this.bank,
     );
   }
 
@@ -44,7 +44,7 @@ class Card {
       'numberCard': numberCard,
       'cardCVV': cardCVV,
       'EXD': EXD.millisecondsSinceEpoch,
-      'bank': bank.toMap(),
+      // 'bank': bank.toMap(),
     };
   }
 
@@ -55,7 +55,7 @@ class Card {
       numberCard: map['numberCard'] as String,
       cardCVV: map['cardCVV'] as String,
       EXD: DateTime.fromMillisecondsSinceEpoch(map['EXD'] as int),
-      bank: Bank.fromMap(map['bank'] as Map<String, dynamic>),
+      // bank: Bank.fromMap(map['bank'] as Map<String, dynamic>),
     );
   }
 
@@ -66,7 +66,7 @@ class Card {
       numberCard: "",
       cardCVV: "",
       EXD: DateTime.now(),
-      bank: Bank.template(),
+      // bank: Bank.template(),
     );
   }
 
@@ -76,18 +76,18 @@ class Card {
 
   @override
   String toString() {
-    return 'Card(id: $id, cardHolderName: $cardHolderName, numberCard: $numberCard, cardCVV: $cardCVV, EXD: $EXD, bank: $bank)';
+    return 'Card(id: $id, cardHolderName: $cardHolderName, numberCard: $numberCard, cardCVV: $cardCVV, EXD: $EXD)';
   }
 
   @override
   bool operator ==(covariant Card other) {
     if (identical(this, other)) return true;
 
-    return other.id == id && other.cardHolderName == cardHolderName && other.numberCard == numberCard && other.cardCVV == cardCVV && other.EXD == EXD && other.bank == bank;
+    return other.id == id && other.cardHolderName == cardHolderName && other.numberCard == numberCard && other.cardCVV == cardCVV && other.EXD == EXD;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ cardHolderName.hashCode ^ numberCard.hashCode ^ cardCVV.hashCode ^ EXD.hashCode ^ bank.hashCode;
+    return id.hashCode ^ cardHolderName.hashCode ^ numberCard.hashCode ^ cardCVV.hashCode ^ EXD.hashCode;
   }
 }

@@ -25,8 +25,12 @@ class AddPaymentController extends GetxController {
   }
 
   Future<void> loadBanks() async {
-    banks = await BankRepository().getBank();
-    update();
+    try {
+      banks = await BankRepository().getBank();
+      update();
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Failed to load banks: $e");
+    }
   }
 
   void changedBank(Bank bank) {
@@ -37,37 +41,46 @@ class AddPaymentController extends GetxController {
   Future<void> addCart() async {
     load = true;
     update();
-    int check = 0;
-    if (nameController.text == "") {
-      check++;
+    try {
+      int check = 0;
+      if (nameController.text == "") {
+        print("Name is null");
+        check++;
+      }
+      if (numberController.text.length != 16) {
+        print("Number card is null");
+        check++;
+      }
+      if (cvvController.text.length != 4) {
+        print("CVV is incorrect");
+        check++;
+      }
+      if (expiryController.text == "") {
+        check++;
+      }
+      // if (seletedBank == null) {
+      //   check++;
+      // }
+      if (check == 0) {
+        Card card = Card(
+          id: "",
+          cardHolderName: nameController.text,
+          numberCard: numberController.text,
+          cardCVV: cvvController.text,
+          EXD: DateFormat('dd/MM/yyyy').parse(expiryController.text),
+          // bank: seletedBank!,
+        );
+        await CardRepository().addCard(card.toMap());
+        Get.back();
+      } else {
+        Fluttertoast.showToast(msg: "The information you provided is incorrect");
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(msg: "Failed to add card: $e");
+    } finally {
+      load = false;
+      update();
     }
-    if (numberController.text.length != 16) {
-      check++;
-    }
-    if (cvvController.text.length != 4) {
-      check++;
-    }
-    if (expiryController.text == "") {
-      check++;
-    }
-    if (seletedBank == null) {
-      check++;
-    }
-    if (check == 0) {
-      Card card = Card(
-        id: "",
-        cardHolderName: nameController.text,
-        numberCard: numberController.text,
-        cardCVV: cvvController.text,
-        EXD: DateFormat('dd/MM/yyyy').parse(expiryController.text),
-        bank: seletedBank!,
-      );
-      await CardRepository().addCard(card.toMap());
-      Get.back();
-    } else {
-      Fluttertoast.showToast(msg: "The information you provided is incorrect");
-    }
-    load = false;
-    update();
   }
 }

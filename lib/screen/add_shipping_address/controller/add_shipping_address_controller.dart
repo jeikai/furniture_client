@@ -68,28 +68,37 @@ class AddShippingAddressController extends GetxController {
       print("Phone number empty");
       checkError++;
     }
-    if (dropdownValueProvince == null) {
-      print("Province empty");
-      checkError++;
-    }
-    if (dropdownValueDistrict == null) {
-      print("District empty");
-      checkError++;
-    }
-    if (dropdownValueWard == null) {
-      print("Ward empty");
-      checkError++;
-    }
+    // if (dropdownValueProvince == null) {
+    //   print("Province empty");
+    //   checkError++;
+    // }
+    // if (dropdownValueDistrict == null) {
+    //   print("District empty");
+    //   checkError++;
+    // }
+    // if (dropdownValueWard == null) {
+    //   print("Ward empty");
+    //   checkError++;
+    // }
     if (checkError == 0) {
+      const String defaultProvinceCode = '79'; // Ho Chi Minh City
+      const String defaultDistrictCode = '001'; // A specific district in Ho Chi Minh City
+      const String defaultWardCode = '00001'; // A specific ward in that district
+
+      const String defaultProvinceName = 'Ho Chi Minh City';
+      const String defaultDistrictName = 'District 1';
+      const String defaultWardName = 'Ward Ben Nghe';
+
       Map<String, dynamic> data = {
         'receiver': nameText.text,
         'phone_number': phoneNumberText.text,
         'address': addressText.text,
-        'province_code': dropdownValueProvince!.code,
-        'district_code': dropdownValueDistrict!.code,
-        'ward_code': dropdownValueWard!.code,
-        'full_address': "${addressText.text}, ${dropdownValueWard!.nameWithType}, ${dropdownValueDistrict!.nameWithType}, ${dropdownValueProvince!.nameWithType}",
+        'province_code': dropdownValueProvince?.code ?? defaultProvinceCode,
+        'district_code': dropdownValueDistrict?.code ?? defaultDistrictCode,
+        'ward_code': dropdownValueWard?.code ?? defaultWardCode,
+        'full_address': "${addressText.text}, ${dropdownValueWard?.nameWithType ?? defaultWardName}, ${dropdownValueDistrict?.nameWithType ?? defaultDistrictName}, ${dropdownValueProvince?.nameWithType ?? defaultProvinceName}",
       };
+
       await AddressRepository().addAdress(data);
       Get.back();
     }

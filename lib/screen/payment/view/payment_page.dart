@@ -28,13 +28,18 @@ class PaymentPage extends GetView<PaymentController> {
 
   Widget buildBody() {
     return Container(
-        width: Get.width,
-        height: Get.height,
-        padding: EdgeInsets.only(top: 20),
-        child: Column(children: [
-          _buildPaymentCash(),
-          listCard(),
-        ]));
+      width: Get.width,
+      height: Get.height,
+      padding: EdgeInsets.only(top: 20),
+      child: SingleChildScrollView( // Wrap the content in a SingleChildScrollView
+        child: Column(
+          children: [
+            _buildPaymentCash(),
+            listCard(),
+          ],
+        ),
+      ),
+    );
   }
 
   SizedBox listCard() {
