@@ -41,6 +41,13 @@ class ProductSearchPage extends GetView<SearchPageController> {
   Widget productItem(Product product) {
     double height = (Get.width - 60) / 2 * 0.7;
     if (height > 200) height = 200;
+
+    // Provide a fallback image if the imagePath list is empty or null
+    final imageUrl =
+    (product.imagePath != null && product.imagePath!.isNotEmpty)
+        ? product.imagePath![0]
+        : 'https://via.placeholder.com/150'; // Fallback image URL
+
     return InkWell(
       onTap: () {
         controller.clickProduct(product);
@@ -51,11 +58,11 @@ class ProductSearchPage extends GetView<SearchPageController> {
           Container(
             height: height,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                // image: DecorationImage(
-                //   image: NetworkImage(product.imagePath![0]),
-                //   fit: BoxFit.cover,
-                // ),
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(height: 10),
