@@ -29,7 +29,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   velocity_x: ^4.2.1
   group_button: ^5.2.2
-  http: ^1.2.1
+  http: ^1.2.2
   loading_animation_widget: ^1.2.0+4
   pattern_formatter: ^4.0.0
   number_text_input_formatter: ^1.0.0+1

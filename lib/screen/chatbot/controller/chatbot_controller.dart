@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:furniture_app/data/models/Order.dart';
 import 'package:furniture_app/data/models/cart.dart';
@@ -40,74 +42,115 @@ class ChatBotController extends GetxController {
   }
 
   Future<void> loadDataTemplate() async {
-    ChatBotMessage chatBotMessage = await ChatBotRepository().getChatBotMessage('begin');
-    ChatMessage mess = ChatMessage(messageContent: chatBotMessage.content, messageButton: chatBotMessage.contenButton, messageType: 'admin');
+    ChatBotMessage chatBotMessage =
+        await ChatBotRepository().getChatBotMessage('begin');
+    ChatMessage mess = ChatMessage(
+        messageContent: chatBotMessage.content,
+        messageButton: chatBotMessage.contenButton,
+        messageType: 'admin');
     history.insert(0, History(chatMessage: mess));
     update();
   }
 
   Future<void> loadDataButtonTemplate() async {
-    ChatBotMessage chatBotMessage = await ChatBotRepository().getChatBotMessage('begin');
-    ChatMessage mess = ChatMessage(messageContent: [], messageButton: chatBotMessage.contenButton, messageType: 'admin');
+    ChatBotMessage chatBotMessage =
+        await ChatBotRepository().getChatBotMessage('begin');
+    ChatMessage mess = ChatMessage(
+        messageContent: [],
+        messageButton: chatBotMessage.contenButton,
+        messageType: 'admin');
     history.insert(0, History(chatMessage: mess));
     update();
   }
 
   Future<void> chooseButton(String content, String id) async {
-    ChatMessage mess = ChatMessage(messageContent: [
-      content
-    ], messageType: 'user');
+    ChatMessage mess =
+        ChatMessage(messageContent: [content], messageType: 'user');
     history.insert(0, History(chatMessage: mess));
     update();
+
     if (id != "") {
-      ChatBotMessage chatBotMessage = await ChatBotRepository().getChatBotMessage(id);
-      ChatMessage mess = ChatMessage(messageContent: chatBotMessage.content, messageButton: chatBotMessage.contenButton, messageType: 'admin');
+      ChatBotMessage chatBotMessage =
+          await ChatBotRepository().getChatBotMessage(id);
+      ChatMessage mess = ChatMessage(
+          messageContent: chatBotMessage.content,
+          messageButton: chatBotMessage.contenButton,
+          messageType: 'admin');
       history.insert(0, History(chatMessage: mess));
       update();
     } else {
       if (content == "Product warranty policy") {
-        history.insert(
-            0,
-            History(widget: PolicyPage()
-                // ChangeEmailPage(),
-                ));
-
+        history.insert(0, History(widget: PolicyPage()));
         update();
         loadDataButtonTemplate();
         return;
-      }
-      if (content == "Shipping process") {
-        history.insert(0, History(widget: await loadOrderStatus()));
-        update();
-        return;
-      }
-      if (content == "Hot Products") {
-        clickHotProduct();
+      } else if (content == "Shipping process") {
+          history.insert(0, History(widget: await loadOrderStatus()));
+          update();
+          return;
+        } else if (content == "Hot Products") {
+          clickHotProduct();
         loadDataButtonTemplate();
         return;
-      }
-      if (content == "Return/Refund Conditions") {
+      } else if (content == "Return/Refund Conditions") {
         history.insert(0, History(widget: RefundPage()));
         update();
         loadDataButtonTemplate();
         return;
-      }
-      if (content == "I'm having trouble placing an order") {
+      } else if (content == "I'm having trouble placing an order") {
         history.insert(0, History(widget: const OrderErrorPage()));
         update();
         return;
-      }
-      if (content == "My order is damaged, missing, wrong product") {
+      } else if (content == "My order is damaged, missing, wrong product") {
         history.insert(0, History(widget: const WrongProductPage()));
         update();
         loadDataButtonTemplate();
         return;
-      }
-      if (content == "I still have not received the goods") {
+      } else if (content == "I still have not received the goods") {
         history.insert(0, History(widget: const ErrorReceivedPage()));
         update();
         loadDataButtonTemplate();
         return;
+      } else {
+        // Call Gemini AI API
+        String apiKey = 'AIzaSyBzxza1xtHf4q9lhrU8FJWHuI8FyEjhxdI';
+        String apiUrl =
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey';
+
+        var response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'contents': [
+              {
+                'parts': [
+                  {'text': content}
+                ]
+              }
+            ],
+            'generationConfig': {
+              'temperature': 0.9,
+              'topK': 1,
+              'topP': 1,
+              'maxOutputTokens': 2048,
+              'stopSequences': []
+            },
+            'safetySettings': []
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          String aiResponse =
+              jsonResponse['candidates'][0]['content']['parts'][0]['text'];
+
+          history.insert(0, History(widget: Text(aiResponse)));
+          update();
+        } else {
+          history.insert(
+              0, History(widget: Text('Failed to get response from AI')));
+          update();
+        }
       }
     }
   }
@@ -239,5 +282,6 @@ class ChatBotController extends GetxController {
 class History {
   Widget? widget;
   ChatMessage? chatMessage;
+
   History({this.widget, this.chatMessage});
 }

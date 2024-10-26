@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.grey),
       ),
       home: const AuthWrapper(),
+      // set up dependencies that were initialized as the app starts
       initialBinding: MyBinding(),
     );
   }
