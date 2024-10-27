@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:furniture_app/data/paths/icon_path.dart';
 import 'package:furniture_app/screen/favorite/view/favorite_page.dart';
 import 'package:furniture_app/screen/home/view/home_page.dart';
+import 'package:furniture_app/screen/profile/view/profile_page.dart';
 import 'package:get/get.dart';
 
 class BottomBarController extends GetxController {
@@ -16,14 +17,16 @@ class BottomBarController extends GetxController {
     super.onInit();
     icons_seleted_path = [
       icon_home_seleted,
-      icon_favories_seleted
+      icon_favories_seleted,
+      icon_account_seleted
     ];
-    icons_path = [icon_home, icon_favories];
+    icons_path = [icon_home, icon_favories, icon_account];
   }
 
   Widget getBody() {
     if (indexCurren.value == 0) return HomePage();
     if (indexCurren.value == 1) return FavoritePage();
+    if (indexCurren.value == 2) return const ProfilePage();
     return Container();
   }
 

@@ -7,7 +7,6 @@ import 'package:furniture_app/data/values/colors.dart';
 import 'package:furniture_app/data/values/fonts.dart';
 import 'package:furniture_app/data/values/strings.dart';
 import 'package:furniture_app/screen/cart/view/cart_page.dart';
-import 'package:furniture_app/screen/chatbot/view/chatbot_page.dart';
 import 'package:furniture_app/screen/filters/view/filters_page.dart';
 import 'package:furniture_app/screen/home/controller.dart/home_controller.dart';
 import 'package:furniture_app/screen/search_product/view/search_page.dart';
@@ -34,18 +33,6 @@ class HomePage extends GetView<HomeController> {
           direction: Axis.vertical,
           children: [
             const SizedBox(height: 10),
-            FloatingActionButton(
-              onPressed: () {
-                Get.to(ChatBotPage());
-              },
-              tooltip: 'Increment',
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(
-                  avatar_chatbot,
-                ),
-              ),
-            ),
           ],
         ),
       ),
