@@ -1,4 +1,3 @@
-import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +9,6 @@ import 'package:furniture_app/data/values/strings.dart';
 import 'package:furniture_app/screen/cart/view/cart_page.dart';
 import 'package:furniture_app/screen/chatbot/view/chatbot_page.dart';
 import 'package:furniture_app/screen/filters/view/filters_page.dart';
-import 'package:furniture_app/screen/game_voucher/view/game_voucher_page.dart';
 import 'package:furniture_app/screen/home/controller.dart/home_controller.dart';
 import 'package:furniture_app/screen/search_product/view/search_page.dart';
 import 'package:get/get.dart';
@@ -35,15 +33,6 @@ class HomePage extends GetView<HomeController> {
         floatingActionButton: Wrap(
           direction: Axis.vertical,
           children: [
-            DraggableFab(
-              child: FloatingActionButton(
-                backgroundColor: buttonColor,
-                onPressed: () {
-                  Get.to(const GameVoucherPage());
-                },
-                child: Image.asset(ic_game),
-              ),
-            ),
             const SizedBox(height: 10),
             FloatingActionButton(
               onPressed: () {
@@ -73,14 +62,15 @@ class HomePage extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [filters(context), sortCustom()],
           ),
-          Expanded(  // Added Expanded here to prevent overflow
+          Expanded(
+            // Added Expanded here to prevent overflow
             child: controller.loadDataProduct
                 ? Center(
-              child: LoadingAnimationWidget.fourRotatingDots(
-                color: Colors.black,
-                size: 30,
-              ),
-            )
+                    child: LoadingAnimationWidget.fourRotatingDots(
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                  )
                 : buildProducts(),
           ),
         ],
@@ -135,7 +125,8 @@ class HomePage extends GetView<HomeController> {
               height: height,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.grey, // Placeholder color for products without images
+                color: Colors
+                    .grey, // Placeholder color for products without images
               ),
               child: Center(
                 child: Icon(Icons.image_not_supported, color: Colors.white),
