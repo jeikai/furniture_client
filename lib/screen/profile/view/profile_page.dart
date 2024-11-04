@@ -4,20 +4,18 @@ import 'package:furniture_app/data/paths/icon_path.dart';
 import 'package:furniture_app/data/values/colors.dart';
 import 'package:furniture_app/data/values/fonts.dart';
 import 'package:furniture_app/data/values/strings.dart';
-import 'package:furniture_app/screen/chat_product/view/chat_product_page.dart';
-import 'package:furniture_app/screen/my_review/view/my_review_page.dart';
 import 'package:furniture_app/screen/profile/controller/profile_controller.dart';
 import 'package:furniture_app/screen/setting/view/setting_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../order/view/order_page.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print(controller.users);
     return GetBuilder<ProfileController>(
         builder: (value) => Scaffold(
           appBar: appBarCustom(),
@@ -25,80 +23,71 @@ class ProfilePage extends GetView<ProfileController> {
         ));
   }
 
-  Container buildBody(UserProfile user) {
+  Widget buildBody(UserProfile user) {
     return Container(
         color: backgroundColor,
-        child: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-              height: Get.height * 0.03,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  SizedBox(height: Get.height * 0.03),
+                  buildProfileHeader(),
+                  SizedBox(height: Get.height * 0.03),
+                  cardProfile(my_orders, 'Already have ${controller.count} orders', () {
+                    Get.to(() => OrderPage());
+                  }),
+                  cardProfile(setting, sub_setting, () async {
+                    var result = await Get.to(() => const SettingPage(), arguments: controller.users);
+                    if (result) controller.loadData();
+                  }),
+                ]),
+              ),
             ),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(left: 25),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: controller.getAvatar(),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        controller.users.name.toString() ?? 'Guest',
-                        style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w700, fontSize: 20),
-                      ),
-                      Text(
-                        controller.users.email.toString() ?? 'guest@example.com',
-                        style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w400, fontSize: 14, color: hintTextColor),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: Get.height * 0.03,
-            ),
-            cardProfile("My Review", '', () {
-              Get.to(const MyReviewPage());
-            }),
-            cardProfile(setting, sub_setting, () async {
-              var result = await Get.to(() => const SettingPage(), arguments: controller.users);
-              if (result) controller.loadData();
-            }),
             buttonLogout(),
-          ]),
+            SizedBox(height: 20),
+          ],
         ));
+  }
+
+  Widget buildProfileHeader() {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 25),
+          child: CircleAvatar(
+            radius: 50,
+            backgroundImage: controller.getAvatar(),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                controller.users.name.toString(),
+                style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w700, fontSize: 20),
+              ),
+              Text(
+                controller.users.email.toString(),
+                style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w400, fontSize: 14, color: hintTextColor),
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   AppBar appBarCustom() {
     return AppBar(
       elevation: 0,
       backgroundColor: backgroundColor,
-      actions: [
-        IconButton(
-            onPressed: () {
-              Get.to(() => ChatProductPage());
-            },
-            icon: SvgPicture.asset(
-              icon_chat,
-              width: 25,
-              height: 25,
-              fit: BoxFit.scaleDown,
-              color: Colors.grey,
-            )),
-      ],
-      title: SizedBox(
-        width: Get.width,
-        child: Text(
-          profile,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w800, fontSize: 18, color: Colors.black),
-        ),
+      title: Text(
+        profile,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontFamily: jose_fin_sans, fontWeight: FontWeight.w800, fontSize: 18, color: Colors.black),
       ),
     );
   }
@@ -107,10 +96,10 @@ class ProfilePage extends GetView<ProfileController> {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        width: Get.width * 4,
-        height: Get.height * 0.11,
+        width: Get.width * 0.9,
+        height: Get.height * 0.1,
         child: Card(
-          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 17),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           color: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: ListTile(
@@ -119,11 +108,11 @@ class ProfilePage extends GetView<ProfileController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title.toString(),
+                  title,
                   style: TextStyle(fontFamily: jose_fin_sans, fontSize: 18, fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  subText.toString(),
+                  subText,
                   style: TextStyle(fontFamily: jose_fin_sans, fontSize: 14, fontWeight: FontWeight.w400, color: hintTextColor),
                 ),
               ],
@@ -138,7 +127,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  InkWell buttonLogout() {
+  Widget buttonLogout() {
     return InkWell(
       onTap: () {
         controller.logout();
@@ -146,14 +135,18 @@ class ProfilePage extends GetView<ProfileController> {
       child: Container(
         width: 50,
         height: 50,
-        margin: EdgeInsets.only(bottom: 20, left: Get.width - 90, right: 20, top: 10),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: const BorderRadius.all(Radius.circular(50)), boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 7,
-            blurRadius: 10,
-          ),
-        ]),
+        margin: EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(50),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 7,
+              blurRadius: 10,
+            ),
+          ],
+        ),
         child: SvgPicture.asset(
           icon_out,
           fit: BoxFit.scaleDown,
@@ -163,3 +156,4 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 }
+

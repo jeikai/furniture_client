@@ -1,3 +1,4 @@
+import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +8,7 @@ import 'package:furniture_app/data/values/colors.dart';
 import 'package:furniture_app/data/values/fonts.dart';
 import 'package:furniture_app/data/values/strings.dart';
 import 'package:furniture_app/screen/cart/view/cart_page.dart';
-import 'package:furniture_app/screen/filters/view/filters_page.dart';
+import 'package:furniture_app/screen/chatbot/view/chatbot_page.dart';
 import 'package:furniture_app/screen/home/controller.dart/home_controller.dart';
 import 'package:furniture_app/screen/search_product/view/search_page.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,18 @@ class HomePage extends GetView<HomeController> {
           direction: Axis.vertical,
           children: [
             const SizedBox(height: 10),
+            FloatingActionButton(
+              onPressed: () {
+                Get.to(ChatBotPage());
+              },
+              tooltip: 'Increment',
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(
+                  avatar_chatbot,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -47,17 +60,16 @@ class HomePage extends GetView<HomeController> {
           menuCustom(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [filters(context), sortCustom()],
+
           ),
-          Expanded(
-            // Added Expanded here to prevent overflow
+          Expanded(  // Added Expanded here to prevent overflow
             child: controller.loadDataProduct
                 ? Center(
-                    child: LoadingAnimationWidget.fourRotatingDots(
-                      color: Colors.black,
-                      size: 30,
-                    ),
-                  )
+              child: LoadingAnimationWidget.fourRotatingDots(
+                color: Colors.black,
+                size: 30,
+              ),
+            )
                 : buildProducts(),
           ),
         ],
@@ -112,8 +124,7 @@ class HomePage extends GetView<HomeController> {
               height: height,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors
-                    .grey, // Placeholder color for products without images
+                color: Colors.grey, // Placeholder color for products without images
               ),
               child: Center(
                 child: Icon(Icons.image_not_supported, color: Colors.white),
@@ -194,21 +205,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget filters(context) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: Get.height * 0.024),
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  filterProduct(context,
-                      controller.menu[controller.currentIndex].path.toString());
-                },
-                icon: const Icon(Icons.filter_list_rounded)),
-            const Text('Filter'),
-          ],
-        ));
-  }
+
 
   Widget sortCustom() {
     return InkWell(
@@ -311,20 +308,5 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Future<void> filterProduct(context, String category) async {
-    Map<String, dynamic> re = await showModalBottomSheet(
-        isScrollControlled: false,
-        context: context,
-        backgroundColor: backgroundColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusDirectional.only(
-            topEnd: Radius.circular(30),
-            topStart: Radius.circular(30),
-          ),
-        ),
-        builder: (context) => FiltersPage(
-              category: category,
-            )).whenComplete(() => print(""));
-    if (re != null) controller.filterBy(re);
-  }
+
 }

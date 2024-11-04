@@ -10,7 +10,6 @@ import 'package:furniture_app/screen/profile/view/profile_page.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../data/models/Address.dart';
 import '../../../data/models/user_profile.dart';
 import '../../../data/values/colors.dart';
 
@@ -38,6 +37,7 @@ class EditProfileController extends GetxController {
     fullNameController = TextEditingController(text: users.name);
     emailController = TextEditingController(text: users.email);
   }
+
 
 
   void selectedImage() async {

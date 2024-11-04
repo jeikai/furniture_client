@@ -3,6 +3,7 @@ import 'package:furniture_app/data/values/colors.dart';
 import 'package:furniture_app/data/values/fonts.dart';
 import 'package:furniture_app/data/values/strings.dart';
 import 'package:furniture_app/screen/password/change_password/change-password_controller.dart';
+import 'package:furniture_app/screen/profile/view/profile_page.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -52,7 +53,7 @@ class ChangePassword extends GetView<ChangePasswordController> {
       centerTitle: true,
       backgroundColor: backgroundColor,
       leading: IconButton(
-        onPressed: () => {},
+        onPressed: () => Get.to(ProfilePage()),
         icon: Icon(
           Icons.arrow_back_ios,
           color: Colors.black,

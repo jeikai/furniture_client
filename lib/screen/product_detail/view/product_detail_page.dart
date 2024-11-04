@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:furniture_app/data/models/product.dart';
 import 'package:furniture_app/data/values/colors.dart';
 import 'package:furniture_app/data/values/fonts.dart';
-import 'package:furniture_app/screen/chat_product/view/chat_product_page.dart';
 import 'package:furniture_app/screen/product_detail/controller/product_detail_controller.dart';
 import 'package:get/get.dart';
 
 import '../../add_cart_option/controller/add_cart_option_controller.dart';
-import '../../review_products/view/review_products_page.dart';
 
 class ProductDetailPage extends GetView<ProductDetailController> {
   @override
@@ -112,16 +110,7 @@ class ProductDetailPage extends GetView<ProductDetailController> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey.withOpacity(0.1)),
-            child: IconButton(
-              icon: Icon(
-                Icons.textsms_outlined,
-                color: Colors.green,
-                size: 30,
-              ),
-              onPressed: () {
-                Get.to(ChatProductPage(), arguments: controller.product);
-              },
-            )),
+         ),
       ],
     );
   }
@@ -149,23 +138,7 @@ class ProductDetailPage extends GetView<ProductDetailController> {
                 ),
               ),
               const SizedBox(width: 5),
-              InkWell(
-                onTap: () {
-                  Get.to(
-                    ReviewProductsPage(),
-                    arguments: {'product': product},
-                  );
-                },
-                child: Text(
-                  "(${controller.product.totalReview} reviews)",
-                  style: TextStyle(
-                    fontFamily: jose_fin_sans,
-                    fontSize: 18,
-                    color: textGrey3Color.withOpacity(0.8),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
+
             ],
           ),
           Text(

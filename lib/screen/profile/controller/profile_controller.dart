@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furniture_app/data/auth/auth_service.dart';
 import 'package:furniture_app/data/models/user_profile.dart';
+import 'package:furniture_app/data/repository/order_repository.dart';
 import 'package:furniture_app/data/values/images.dart';
 import 'package:furniture_app/screen/auth/login/view/login_page.dart';
 import 'package:get/get.dart';
@@ -13,14 +14,12 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    print("onInit của User");
     loadData();
+    getNumberOrder();
   }
 
   Future<void> loadData() async {
     users = await UserRepository().getUserProfile();
-    print("Init user");
-    print(users);
     update();
   }
 
@@ -34,4 +33,9 @@ class ProfileController extends GetxController {
     return AssetImage(avatar);
   }
 
+  Future<void> getNumberOrder() async {
+    count = await OrderRepository().countOrder();
+    print(count);
+    update();
+  }
 }

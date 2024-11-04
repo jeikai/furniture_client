@@ -5,6 +5,7 @@ import 'package:furniture_app/data/values/colors.dart';
 import 'package:furniture_app/data/values/fonts.dart';
 import 'package:furniture_app/data/values/strings.dart';
 import 'package:furniture_app/screen/cart/controller/cart_controller.dart';
+import 'package:furniture_app/screen/checkout/view/checkout_page.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -101,6 +102,7 @@ class CartPage extends GetView<CartController> {
         ),
         SizedBox(height: Get.height * 0.01),
         totalPrice(),
+        buttonCheckOut(),
       ],
     );
   }
@@ -284,5 +286,42 @@ class CartPage extends GetView<CartController> {
     );
   }
 
-
+  Widget buttonCheckOut() {
+    return InkWell(
+      onTap: () {
+        if (controller.loadCheckout == false) {
+          controller.clickButtonCheckOut();
+        }
+      },
+      child: Container(
+          margin:
+              const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          width: Get.width,
+          decoration: BoxDecoration(
+              color: buttonColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [
+                BoxShadow(
+                  color: ColorShadow,
+                  blurRadius: 10,
+                  spreadRadius: 4,
+                )
+              ]),
+          child: (controller.loadCheckout)
+              ? Center(
+                  child: LoadingAnimationWidget.inkDrop(
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                )
+              : Text(check_out,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: Get.width * 0.051,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ))),
+    );
+  }
 }

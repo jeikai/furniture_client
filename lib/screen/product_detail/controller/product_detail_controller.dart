@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:furniture_app/data/models/product.dart';
 import 'package:furniture_app/data/repository/user_repository.dart';
 import 'package:get/get.dart';
-import '../../../data/models/review.dart';
-import '../../../data/repository/review_repository.dart';
 
 class ProductDetailController extends GetxController {
   late Product product;
-  List<Review> reviews = [];
   int currentIndexImage = 0;
   late PageController pageViewController;
   int number = 1;
@@ -32,18 +29,6 @@ class ProductDetailController extends GetxController {
   // }
 
   Future<void> loadData() async {
-    reviews = await ReviewRepository().getReviewsByProduct(product);
-    if (reviews.length > 0) {
-      double total = 0;
-      for (int i = 0; i < reviews.length; i++) {
-        total += reviews[i].numberStart ?? 0;
-      }
-      if (total > 0) {
-        numberStart = total / reviews.length;
-        product.numberStart = numberStart;
-        product.totalReview = reviews.length;
-      }
-    }
     update();
     await UserRepository().seemProduct(product);
   }

@@ -3,6 +3,7 @@ import 'package:furniture_app/data/models/product.dart';
 import 'package:furniture_app/data/repository/cart_repository.dart';
 import 'package:furniture_app/data/repository/product_repository.dart';
 import 'package:furniture_app/data/values/images.dart';
+import 'package:furniture_app/screen/checkout/view/checkout_page.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/cart.dart';
@@ -56,6 +57,27 @@ class CartController extends GetxController {
     update();
   }
 
+  Future<void> clickButtonCheckOut() async {
+    List<Cart> c = [];
+    List<Product> p = [];
+    for (int i = 0; i < check.length; i++) {
+      if (check[i]) {
+        Cart j = carts[i];
+        j.amount = number[i];
+        c.add(j);
+        p.add(products[i]);
+      }
+    }
+    if (c.length > 0) {
+      var result = await Get.to(const CheckoutPage(), arguments: {
+        'carts': c,
+        'products': p,
+      });
+      if (result == "Reload list cart") {
+        loadData();
+      }
+    }
+  }
 
   Future<void> loadData() async {
     carts = await CartRepository().getAllMyCarts();
